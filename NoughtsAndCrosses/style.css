@@ -37,7 +37,7 @@ table tr td:last-child {
     display: none;
     width: 200px;
     top: 120px;
-    background-color: blue;
+    background-color: lightslategrey;
     position: absolute;
     left: 50%;
     margin-left: -100px;
