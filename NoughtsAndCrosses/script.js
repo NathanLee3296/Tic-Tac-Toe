@@ -32,7 +32,6 @@ function startGame() {
     }
 
     if (gamemode === "AIvsAI") {
-
         secondTurn, firstTurn = -1;
         while (document.querySelector(".endgame").style.display === "none") {
             if(turnCount === 1 && firstTurn === -1) {
@@ -62,9 +61,6 @@ function startGame() {
     }
 }
 
-
-
-
 function turnClick(square) {
     if (typeof origBoard[square.target.id] == 'number') {
         if (gamemode === "basicAI" ) {
@@ -79,16 +75,12 @@ function turnClick(square) {
             if (turnCount % 2 === 0) {
                 turn(square.target.id, huPlayer2);
                 turnCount += 1;
-                checkTie();
             }
             else {
                 turn(square.target.id, huPlayer);
                 turnCount += 1;
-                checkTie();
             }
         }
-
-
     }
 }
 
@@ -96,7 +88,7 @@ function turn(squareId, player) {
     origBoard[squareId] = player;
     document.getElementById(squareId).innerText = player;
     let gameWon = checkWin(origBoard, player);
-    if (gameWon) gameOver(gameWon)
+    if (gameWon) gameOver(gameWon);
 }
 
 function checkWin(board, player) {
@@ -109,6 +101,11 @@ function checkWin(board, player) {
             break;
         }
     }
+
+    if (gamemode === "human") {
+        checkTie();
+    }
+
     return gameWon;
 }
 
@@ -149,13 +146,13 @@ function bestSpot() {
 }
 
 function bestSpotUnbeatable() {
-    console.log(minimax(origBoard, aiPlayer).index)
+    console.log(minimax(origBoard, aiPlayer).index);
     return minimax(origBoard, aiPlayer).index;
 }
 
 function minimax(newBoard, player) {
     var availSpots = emptySquares();
-
+    var result;
     if (checkWin(newBoard, huPlayer)) {
         return {score: -10};
     } else if (checkWin(newBoard, aiPlayer)) {
@@ -170,10 +167,10 @@ function minimax(newBoard, player) {
         newBoard[availSpots[i]] = player;
 
         if (player == aiPlayer) {
-            var result = minimax(newBoard, huPlayer);
+            result = minimax(newBoard, huPlayer);
             move.score = result.score;
         } else {
-            var result = minimax(newBoard, aiPlayer);
+            result = minimax(newBoard, aiPlayer);
             move.score = result.score;
         }
 
@@ -183,8 +180,9 @@ function minimax(newBoard, player) {
     }
 
     var bestMove;
+    var bestScore;
     if(player === aiPlayer) {
-        var bestScore = -10000;
+        bestScore = -10000;
         for(var i = 0; i < moves.length; i++) {
             if (moves[i].score > bestScore) {
                 bestScore = moves[i].score;
@@ -192,7 +190,7 @@ function minimax(newBoard, player) {
             }
         }
     } else {
-        var bestScore = 10000;
+        bestScore = 10000;
         for(var i = 0; i < moves.length; i++) {
             if (moves[i].score < bestScore) {
                 bestScore = moves[i].score;
@@ -220,32 +218,3 @@ function declareWinner(winner) {
     document.querySelector(".endgame").style.display = "block";
     document.querySelector(".endgame .text").innerText = winner;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
